@@ -1,0 +1,17 @@
+# Robots.txt for EduWorkflow Labs
+# Allow all web crawlers to index the site
+
+User-agent: *
+Allow: /
+
+# Disallow access to admin and private areas
+Disallow: /api/
+Disallow: /admin/
+Disallow: /_next/
+Disallow: /thank-you/
+
+# Point to sitemap
+Sitemap: https://YOUR_DOMAIN.com/sitemap.xml
+
+# Crawl delay (optional - helps prevent overwhelming server)
+Crawl-delay: 1

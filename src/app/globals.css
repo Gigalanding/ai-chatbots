@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+/* CSS Custom Properties for Brand Colors */
+:root {
+  --color-primary: #3B82F6;
+  --color-primary-hover: #2563EB;
+  --color-accent: #10B981;
+  --color-accent-hover: #059669;
+  --color-secondary: #6B7280;
+}
+
+@theme inline {
+  /* Brand Colors */
+  --color-blue-500: var(--color-primary);
+  --color-blue-600: var(--color-primary);
+  --color-blue-700: var(--color-primary-hover);
+  --color-emerald-500: var(--color-accent);
+  --color-emerald-600: var(--color-accent);
+  --color-emerald-700: var(--color-accent-hover);
+  
+  /* Typography */
+  --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+/* Base Styles */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: white;
+  color: #111827;
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Focus Styles for Better Accessibility */
+*:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Smooth transitions for reduced motion users */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
