@@ -15,7 +15,7 @@ interface SectionProps extends React.HTMLAttributes<HTMLElement> {
  * Section component for consistent page layout and spacing
  * Optionally includes Container component for content width
  */
-export const Section = React.forwardRef<HTMLElement, SectionProps>(({
+export const Section = React.forwardRef<HTMLDivElement, SectionProps>(({
   as = 'section',
   spacing = 'lg',
   background = 'transparent',

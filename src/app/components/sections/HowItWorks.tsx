@@ -98,7 +98,7 @@ export function HowItWorks() {
             Ready to get started?
           </h3>
           <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-            Join hundreds of educators who've streamlined their workflows. 
+            Join hundreds of educators who&apos;ve streamlined their workflows. 
             The first step takes less than 30 seconds.
           </p>
           

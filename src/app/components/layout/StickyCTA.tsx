@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, X } from 'lucide-react';
 import { Button } from '@/app/components/ui';
-import { marketing, experimentVariants } from '@/app/config/marketing';
+import { experimentVariants } from '@/app/config/marketing';
 import { cn } from '@/lib/utils';
 
 /**

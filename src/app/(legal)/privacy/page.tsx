@@ -1,14 +1,9 @@
+'use client';
+
 import React from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { Button, Section, Container, Logo } from '@/app/components/ui';
 import { marketing } from '@/app/config/marketing';
-import { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: `Privacy Policy - ${marketing.brandName}`,
-  description: `Privacy policy for ${marketing.brandName}. Learn how we collect, use, and protect your personal information.`,
-  robots: 'index, follow',
-};
 
 /**
  * Privacy Policy page
@@ -183,11 +178,11 @@ export default function PrivacyPolicyPage() {
                 </h2>
                 <div className="space-y-4 text-gray-700">
                   <p>
-                    We use Plausible Analytics, a privacy-focused analytics service that doesn't 
+                    We use Plausible Analytics, a privacy-focused analytics service that doesn&apos;t 
                     use cookies or track personal information across websites.
                   </p>
                   <p>
-                    We may use essential cookies for website functionality, but we don't use 
+                    We may use essential cookies for website functionality, but we don&apos;t use 
                     tracking cookies for advertising purposes.
                   </p>
                 </div>
@@ -200,7 +195,7 @@ export default function PrivacyPolicyPage() {
                 <div className="space-y-4 text-gray-700">
                   <p>
                     We may update this privacy policy from time to time. We will notify you of 
-                    any changes by posting the new policy on this page and updating the "last updated" date.
+                    any changes by posting the new policy on this page and updating the &quot;last updated&quot; date.
                   </p>
                 </div>
               </section>

@@ -1,14 +1,9 @@
+'use client';
+
 import React from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { Button, Section, Container, Logo } from '@/app/components/ui';
 import { marketing } from '@/app/config/marketing';
-import { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: `Terms of Service - ${marketing.brandName}`,
-  description: `Terms of service for ${marketing.brandName}. Learn about our service terms, user responsibilities, and legal agreements.`,
-  robots: 'index, follow',
-};
 
 /**
  * Terms of Service page

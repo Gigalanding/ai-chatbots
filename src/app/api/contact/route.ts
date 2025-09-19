@@ -1,6 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { z, ZodError } from 'zod';
 import { supabaseServer } from '@/lib/supabase/server';
+
+// Helper to temporarily bypass Supabase strict typing until database is set up
+const supabaseClient = supabaseServer as unknown as { 
+  from: (table: string) => {
+    insert: (data: unknown[]) => { select: () => { single: () => Promise<{ data: unknown; error: unknown }> } };
+  }
+};
 
 // Ensure Node.js runtime for server-side operations
 export const runtime = 'nodejs';
@@ -49,6 +56,7 @@ function checkRateLimit(ip: string): boolean {
 function getClientIP(request: NextRequest): string {
   const forwarded = request.headers.get('x-forwarded-for');
   const realIP = request.headers.get('x-real-ip');
+  const cfConnectingIP = request.headers.get('cf-connecting-ip');
   
   if (forwarded) {
     return forwarded.split(',')[0].trim();
@@ -58,7 +66,11 @@ function getClientIP(request: NextRequest): string {
     return realIP;
   }
   
-  return request.ip || 'unknown';
+  if (cfConnectingIP) {
+    return cfConnectingIP;
+  }
+  
+  return 'unknown';
 }
 
 /**
@@ -115,7 +127,7 @@ export async function POST(request: NextRequest) {
     };
 
     // Insert into Supabase
-    const { data, error } = await supabaseServer
+    const { data, error } = await supabaseClient
       .from('contacts')
       .insert([contactData])
       .select()
@@ -133,12 +145,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Log successful submission (remove in production or use proper logging)
-    console.log('Contact submission successful:', {
-      id: data.id,
-      email: data.email,
-      role: data.role,
-      ip: clientIP
-    });
+    console.log('Contact submission successful');
 
     // TODO: Send notification email (optional)
     // await sendNotificationEmail(contactData);
@@ -146,21 +153,21 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       message: 'Thank you! We\'ll be in touch within 1 business day.',
-      id: data.id
+      id: (data as { id?: string })?.id || 'unknown'
     });
 
   } catch (error) {
     console.error('Contact API error:', error);
 
     // Handle validation errors
-    if (error instanceof z.ZodError) {
+    if (error instanceof ZodError) {
       return NextResponse.json(
         {
           success: false,
           message: 'Please check your form data and try again.',
-          errors: error.errors.map(err => ({
-            field: err.path.join('.'),
-            message: err.message
+          errors: error.issues.map(issue => ({
+            field: issue.path.join('.'),
+            message: issue.message
           }))
         },
         { status: 400 }

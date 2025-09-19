@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Calendar, ExternalLink } from 'lucide-react';
 import { Button, Section, Container } from '@/app/components/ui';
 import { marketing } from '@/app/config/marketing';
@@ -58,7 +58,7 @@ export function BookingEmbed() {
             Book your discovery call
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
-            Choose a time that works for you. We'll send you a calendar invite with 
+            Choose a time that works for you. We&apos;ll send you a calendar invite with 
             a secure video link and a quick prep form.
           </p>
           
@@ -132,15 +132,21 @@ export function BookingEmbed() {
     }
   }
 
-  function getBookingUrl() {
-    switch (marketing.booking.provider) {
-      case 'calcom':
-        return `https://cal.com/${marketing.booking.calcomUsername}/intro`;
-      case 'calendly':
-        return marketing.booking.calendlyUrl || '';
-      default:
-        return `https://cal.com/${marketing.booking.calcomUsername}/intro`;
-    }
+}
+
+// Helper function to get booking URL
+function getBookingUrl() {
+  const username = process.env.NEXT_PUBLIC_CALCOM_USERNAME || marketing.booking.calcomUsername;
+  const eventType = process.env.NEXT_PUBLIC_CALCOM_EVENT_TYPE || ''; // Optional specific event type
+  const eventPath = eventType ? `/${eventType}` : '';
+  
+  switch (marketing.booking.provider) {
+    case 'calcom':
+      return `https://cal.com/${username}${eventPath}`;
+    case 'calendly':
+      return marketing.booking.calendlyUrl || '';
+    default:
+      return `https://cal.com/${username}${eventPath}`;
   }
 }
 
@@ -149,49 +155,98 @@ export function BookingEmbed() {
  */
 function CalComEmbed() {
   const calRef = useRef<HTMLDivElement>(null);
+  const [embedLoaded, setEmbedLoaded] = useState(false);
 
   useEffect(() => {
-    // Load Cal.com embed script
-    const script = document.createElement('script');
-    script.src = 'https://app.cal.com/embed/embed.js';
-    script.async = true;
-    document.head.appendChild(script);
+    let script: HTMLScriptElement | null = null;
+    
+    // Check if Cal embed script is already loaded
+    const existingScript = document.querySelector('script[src="https://app.cal.com/embed/embed.js"]');
+    
+    if (!existingScript) {
+      // Load Cal.com embed script
+      script = document.createElement('script');
+      script.src = 'https://app.cal.com/embed/embed.js';
+      script.async = true;
+      script.onload = () => {
+        setEmbedLoaded(true);
+        // Initialize Cal embed after script loads
+        if (typeof window !== 'undefined' && (window as unknown as { Cal?: (...args: unknown[]) => void }).Cal) {
+          const calLink = `${process.env.NEXT_PUBLIC_CALCOM_USERNAME || marketing.booking.calcomUsername}`;
+          const Cal = (window as unknown as { Cal: (...args: unknown[]) => void }).Cal;
+          
+          Cal('init', {
+            origin: 'https://app.cal.com'
+          });
+          
+          // Initialize inline embed
+          if (calRef.current) {
+            Cal('inline', {
+              elementOrSelector: calRef.current,
+              calLink: calLink,
+              layout: 'month_view',
+              theme: 'light'
+            });
+          }
+        }
+      };
+      document.head.appendChild(script);
+    } else {
+      // Script already exists, try to initialize
+      setEmbedLoaded(true);
+      setTimeout(() => {
+        if (typeof window !== 'undefined' && (window as unknown as { Cal?: (...args: unknown[]) => void }).Cal && calRef.current) {
+          const calLink = `${process.env.NEXT_PUBLIC_CALCOM_USERNAME || marketing.booking.calcomUsername}`;
+          const Cal = (window as unknown as { Cal: (...args: unknown[]) => void }).Cal;
+          try {
+            Cal('inline', {
+              elementOrSelector: calRef.current,
+              calLink: calLink,
+              layout: 'month_view',
+              theme: 'light'
+            });
+          } catch (error) {
+            console.warn('Cal.com embed initialization failed:', error);
+          }
+        }
+      }, 1000);
+    }
 
     return () => {
-      // Cleanup script on unmount
-      const existingScript = document.querySelector('script[src="https://app.cal.com/embed/embed.js"]');
-      if (existingScript) {
-        document.head.removeChild(existingScript);
+      // Cleanup: remove script only if we added it
+      if (script && script.parentNode) {
+        script.parentNode.removeChild(script);
       }
     };
   }, []);
 
-  const calLink = `${marketing.booking.calcomUsername}/intro`;
-
   return (
-    <div 
-      ref={calRef}
-      className="cal-embed"
-      data-cal-link={calLink}
-      data-cal-config='{"layout":"month_view","theme":"light"}'
-      style={{ width: '100%', height: '600px', overflow: 'scroll' }}
-    >
-      {/* Fallback content while loading */}
-      <div className="flex items-center justify-center h-full bg-gray-50">
-        <div className="text-center">
-          <Calendar className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-          <p className="text-gray-600">Loading calendar...</p>
-          <p className="text-sm text-gray-500 mt-2">
-            <a 
-              href={`https://cal.com/${calLink}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 hover:text-blue-700"
-            >
-              Open calendar in new tab
-            </a>
-          </p>
-        </div>
+    <div className="w-full">
+      {/* Cal.com embed container */}
+      <div 
+        ref={calRef}
+        className="cal-embed"
+        style={{ width: '100%', minHeight: '600px' }}
+      >
+        {/* Fallback content while loading */}
+        {!embedLoaded && (
+          <div className="flex items-center justify-center h-full bg-gray-50 rounded-lg border-2 border-dashed border-gray-300" style={{ minHeight: '600px' }}>
+            <div className="text-center">
+              <Calendar className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <p className="text-gray-600 mb-2">Loading calendar...</p>
+              <p className="text-sm text-gray-500">
+                <a 
+                  href={getBookingUrl()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:text-blue-700 underline"
+                >
+                  Open calendar in new tab
+                </a>
+              </p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -254,7 +309,7 @@ function NativeBooking() {
         Native booking coming soon
       </h3>
       <p className="text-gray-600 mb-6">
-        We're building a custom booking experience. For now, please use the email option below.
+        We&apos;re building a custom booking experience. For now, please use the email option below.
       </p>
       <Button
         variant="primary"

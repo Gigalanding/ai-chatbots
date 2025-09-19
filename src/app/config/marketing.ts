@@ -86,7 +86,7 @@ export const marketing = {
   
   // Booking system configuration
   booking: {
-    provider: "calcom" as const, // 'calcom' | 'calendly' | 'native'
+    provider: "calcom" as "calcom" | "calendly" | "native", // 'calcom' | 'calendly' | 'native'
     calcomUsername: "eduworkflow",
     calendlyUrl: "https://calendly.com/eduworkflow/intro",
     meetingLength: 15,

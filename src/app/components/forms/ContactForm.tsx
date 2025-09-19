@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { Send, CheckCircle, AlertCircle } from 'lucide-react';
 import { Button, Input, Textarea, Section, Container } from '@/app/components/ui';
-import { marketing } from '@/app/config/marketing';
 import { z } from 'zod';
 
 // Contact form validation schema
@@ -61,9 +60,9 @@ export function ContactForm() {
     } catch (error) {
       if (error instanceof z.ZodError) {
         const newErrors: Partial<Record<keyof ContactFormData, string>> = {};
-        error.errors.forEach(err => {
-          if (err.path[0]) {
-            newErrors[err.path[0] as keyof ContactFormData] = err.message;
+        error.issues.forEach(issue => {
+          if (issue.path[0]) {
+            newErrors[issue.path[0] as keyof ContactFormData] = issue.message;
           }
         });
         setErrors(newErrors);
@@ -141,10 +140,10 @@ export function ContactForm() {
           <div className="text-center bg-white rounded-2xl p-8 shadow-sm border border-gray-200">
             <CheckCircle className="w-16 h-16 text-emerald-500 mx-auto mb-4" />
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Thank you! We'll be in touch soon.
+              Thank you! We&apos;ll be in touch soon.
             </h2>
             <p className="text-gray-600 mb-6">
-              We've received your information and will reply within 1 business day 
+              We&apos;ve received your information and will reply within 1 business day 
               with some initial thoughts and next steps.
             </p>
             <Button
@@ -169,7 +168,7 @@ export function ContactForm() {
             Share your workflow challenge
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Tell us about your situation and we'll get back to you with 
+            Tell us about your situation and we&apos;ll get back to you with 
             tailored suggestions within 1 business day.
           </p>
           

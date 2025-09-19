@@ -16,7 +16,7 @@ export function Testimonials() {
             What educators are saying
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Real feedback from busy teachers, professors, and administrators who've 
+            Real feedback from busy teachers, professors, and administrators who&apos;ve 
             streamlined their workflows with our practical approach.
           </p>
         </div>

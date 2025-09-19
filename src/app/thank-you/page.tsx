@@ -1,14 +1,9 @@
+'use client';
+
 import React from 'react';
 import { CheckCircle, Calendar, ArrowLeft, Mail } from 'lucide-react';
 import { Button, Section, Container, Logo } from '@/app/components/ui';
 import { marketing } from '@/app/config/marketing';
-import { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: `Thank You - ${marketing.brandName}`,
-  description: 'Thank you for submitting your workflow challenge. We\'ll be in touch soon with tailored recommendations.',
-  robots: 'noindex', // Don't index thank you pages
-};
 
 /**
  * Thank you page shown after successful form submission
@@ -81,7 +76,7 @@ export default function ThankYouPage() {
                   </div>
                   <div>
                     <h3 className="font-medium text-gray-900 mb-1">Optional follow-up call</h3>
-                    <p className="text-gray-600 text-sm">If there's a good fit, we'll discuss next steps together.</p>
+                    <p className="text-gray-600 text-sm">If there&apos;s a good fit, we&apos;ll discuss next steps together.</p>
                   </div>
                 </div>
               </div>
@@ -111,7 +106,7 @@ export default function ThankYouPage() {
             {/* Contact info */}
             <div className="text-center border-t border-gray-200 pt-8">
               <p className="text-gray-600 mb-4">
-                Have questions? We're here to help.
+                Have questions? We&apos;re here to help.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">

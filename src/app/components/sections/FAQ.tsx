@@ -31,7 +31,7 @@ export function FAQ() {
             Frequently asked questions
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            We understand you're busy. Here are quick answers to the most common 
+            We understand you&apos;re busy. Here are quick answers to the most common 
             questions about our discovery process.
           </p>
         </div>
@@ -87,7 +87,7 @@ export function FAQ() {
             Still have questions?
           </h3>
           <p className="text-gray-600 mb-4">
-            We're happy to chat about your specific situation and workflow challenges.
+            We&apos;re happy to chat about your specific situation and workflow challenges.
           </p>
           <p className="text-sm text-gray-500">
             Email us at{' '}

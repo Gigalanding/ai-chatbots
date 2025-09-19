@@ -1,6 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { z, ZodError } from 'zod';
 import { supabaseServer } from '@/lib/supabase/server';
+import type { NewBooking } from '@/lib/supabase/types';
+
+// Helper to temporarily bypass Supabase strict typing until database is set up
+const supabaseClient = supabaseServer as unknown as { 
+  from: (table: string) => {
+    insert: (data: unknown[]) => { select: () => { single: () => Promise<{ data: unknown; error: unknown }> } };
+    upsert: (data: unknown[], options: unknown) => { select: () => { single: () => Promise<{ data: unknown; error: unknown }> } };
+  }
+};
 
 // Ensure Node.js runtime for server-side operations
 export const runtime = 'nodejs';
@@ -70,6 +79,7 @@ function checkRateLimit(ip: string): boolean {
 function getClientIP(request: NextRequest): string {
   const forwarded = request.headers.get('x-forwarded-for');
   const realIP = request.headers.get('x-real-ip');
+  const cfConnectingIP = request.headers.get('cf-connecting-ip');
   
   if (forwarded) {
     return forwarded.split(',')[0].trim();
@@ -79,7 +89,11 @@ function getClientIP(request: NextRequest): string {
     return realIP;
   }
   
-  return request.ip || 'unknown';
+  if (cfConnectingIP) {
+    return cfConnectingIP;
+  }
+  
+  return 'unknown';
 }
 
 /**
@@ -102,7 +116,6 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const contentType = request.headers.get('content-type');
     const userAgent = request.headers.get('user-agent');
     
     // Determine if this is a webhook or direct booking request
@@ -119,14 +132,14 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Booking API error:', error);
 
-    if (error instanceof z.ZodError) {
+    if (error instanceof ZodError) {
       return NextResponse.json(
         {
           success: false,
           message: 'Invalid booking data provided.',
-          errors: error.errors.map(err => ({
-            field: err.path.join('.'),
-            message: err.message
+          errors: error.issues.map(issue => ({
+            field: issue.path.join('.'),
+            message: issue.message
           }))
         },
         { status: 400 }
@@ -146,10 +159,10 @@ export async function POST(request: NextRequest) {
 /**
  * Handle direct booking requests (optional feature)
  */
-async function handleBookingRequest(body: any, clientIP: string) {
+async function handleBookingRequest(body: unknown, clientIP: string) {
   const validatedData = bookingSchema.parse(body);
 
-  const bookingData = {
+  const bookingData: NewBooking = {
     name: validatedData.name.trim(),
     email: validatedData.email.toLowerCase().trim(),
     role: validatedData.role?.trim() || null,
@@ -167,7 +180,7 @@ async function handleBookingRequest(body: any, clientIP: string) {
     ip: clientIP
   };
 
-  const { data, error } = await supabaseServer
+  const { data, error } = await supabaseClient
     .from('bookings')
     .insert([bookingData])
     .select()
@@ -178,23 +191,19 @@ async function handleBookingRequest(body: any, clientIP: string) {
     throw new Error('Failed to save booking request');
   }
 
-  console.log('Booking request successful:', {
-    id: data.id,
-    email: data.email,
-    slot_start: data.slot_start
-  });
+  console.log('Booking request successful');
 
   return NextResponse.json({
     success: true,
     message: 'Booking request submitted successfully.',
-    id: data.id
+    id: (data as { id?: string })?.id || 'unknown'
   });
 }
 
 /**
  * Handle webhooks from Cal.com/Calendly
  */
-async function handleWebhook(body: any, clientIP: string) {
+async function handleWebhook(body: unknown, clientIP: string) {
   const validatedWebhook = webhookSchema.parse(body);
   const { event } = validatedWebhook.payload;
 
@@ -203,7 +212,7 @@ async function handleWebhook(body: any, clientIP: string) {
   const roleAnswer = answers.find(a => a.question.toLowerCase().includes('role'));
   const orgAnswer = answers.find(a => a.question.toLowerCase().includes('organization') || a.question.toLowerCase().includes('school'));
 
-  const bookingData = {
+  const bookingData: NewBooking = {
     name: event.invitee.name,
     email: event.invitee.email,
     role: roleAnswer?.answer || null,
@@ -219,7 +228,7 @@ async function handleWebhook(body: any, clientIP: string) {
   };
 
   // Upsert booking (update if exists, insert if new)
-  const { data, error } = await supabaseServer
+  const { error } = await supabaseClient
     .from('bookings')
     .upsert([bookingData], { 
       onConflict: 'external_event_id',

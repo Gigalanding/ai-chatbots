@@ -74,7 +74,7 @@ export function PainPoints() {
             Ready to simplify your workflow?
           </h3>
           <p className="text-gray-600 mb-6">
-            Let's talk about practical solutions that actually work for busy educators.
+            Let&apos;s talk about practical solutions that actually work for busy educators.
           </p>
           
           <Button

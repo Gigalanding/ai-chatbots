@@ -154,6 +154,6 @@ export function Hero() {
 // Extend Window interface for Plausible
 declare global {
   interface Window {
-    plausible?: (event: string, options?: { props?: Record<string, any> }) => void;
+    plausible?: (event: string, options?: { props?: Record<string, unknown> }) => void;
   }
 }
