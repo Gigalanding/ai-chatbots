@@ -64,7 +64,7 @@ export function Navigation() {
               <button
                 key={item.href}
                 onClick={() => handleNavClick(item.href, item.label)}
-                className="text-gray-600 hover:text-gray-900 transition-colors font-medium text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded px-2 py-1"
+                className="text-gray-600 hover:text-gray-900 transition-colors font-medium text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded px-2 py-1 cursor-pointer"
               >
                 {item.label}
               </button>
@@ -82,7 +82,7 @@ export function Navigation() {
 
           {/* Mobile menu button */}
           <button
-            className="md:hidden p-2 text-gray-600 hover:text-gray-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded"
+            className="md:hidden p-2 text-gray-600 hover:text-gray-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded cursor-pointer"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
             aria-expanded={isMobileMenuOpen}

@@ -50,7 +50,7 @@ function CalComEmbed() {
       />
       
       {/* Fallback link */}
-      <div className="mt-4 text-center">
+      <div className="text-center">
         <p className="text-sm text-gray-500 mb-2">
           Having trouble with the calendar?
         </p>
@@ -58,7 +58,7 @@ function CalComEmbed() {
           href={getBookingUrl()}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-700 text-sm underline"
+          className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 text-sm underline"
         >
           <ExternalLink className="w-4 h-4" />
           Open calendar in new tab
@@ -92,7 +92,7 @@ function CalendlyEmbed() {
           href={getBookingUrl()}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-700 text-sm underline"
+          className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 text-sm underline"
         >
           <ExternalLink className="w-4 h-4" />
           Open calendar in new tab
@@ -160,15 +160,15 @@ export function BookingEmbed() {
           
           {/* Trust indicators */}
           <div className="mt-6 flex flex-wrap justify-center gap-6 text-sm text-gray-500">
-            <span className="flex items-center gap-1">
+            <span className="flex items-center gap-2">
               <span className="w-2 h-2 bg-emerald-500 rounded-full block" />
               {marketing.booking.meetingLength} minutes
             </span>
-            <span className="flex items-center gap-1">
+            <span className="flex items-center gap-2">
               <span className="w-2 h-2 bg-blue-500 rounded-full block" />
               No sales pressure
             </span>
-            <span className="flex items-center gap-1">
+            <span className="flex items-center gap-2">
               <span className="w-2 h-2 bg-purple-500 rounded-full block" />
               Tailored recommendations
             </span>

@@ -38,7 +38,7 @@ export function PainPoints() {
             Sound familiar?
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            You became an educator to teach and inspire—not to wrestle with endless admin tasks 
+            You became an educator to teach and inspire — not to wrestle with endless admin tasks 
             and disconnected tools that eat up your valuable time.
           </p>
         </div>

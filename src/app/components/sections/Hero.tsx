@@ -127,17 +127,17 @@ export function Hero() {
 
           {/* Trust microcopy */}
           <div className="text-sm text-gray-500 mb-12">
-            <span className="inline-flex items-center gap-1">
+            <span className="inline-flex items-center gap-2">
               <span className="w-2 h-2 bg-emerald-500 rounded-full block" />
               No sales pitch
             </span>
             <span className="mx-3">•</span>
-            <span className="inline-flex items-center gap-1">
+            <span className="inline-flex items-center gap-2">
               <span className="w-2 h-2 bg-emerald-500 rounded-full block" />
               15–30 minutes
             </span>
             <span className="mx-3">•</span>
-            <span className="inline-flex items-center gap-1">
+            <span className="inline-flex items-center gap-2">
               <span className="w-2 h-2 bg-emerald-500 rounded-full block" />
               Privacy-first
             </span>

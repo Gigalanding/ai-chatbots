@@ -111,7 +111,7 @@ export function StickyCTA() {
             
             <button
               onClick={handleDismiss}
-              className="p-2 text-gray-400 hover:text-gray-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded"
+              className="p-2 text-gray-400 hover:text-gray-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded cursor-pointer"
               aria-label="Dismiss"
             >
               <X className="w-5 h-5" />

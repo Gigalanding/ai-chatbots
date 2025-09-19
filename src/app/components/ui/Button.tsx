@@ -37,6 +37,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({
     'font-medium transition-all duration-200',
     'focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
     'disabled:opacity-50 disabled:cursor-not-allowed',
+    'cursor-pointer',
     'relative'
   ];
 
@@ -64,11 +65,11 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({
     ]
   };
 
-  // Size-specific styles
+  // Size-specific styles with improved icon spacing
   const sizeStyles = {
-    sm: 'px-3 py-2 text-sm rounded-md gap-1.5',
-    md: 'px-4 py-2.5 text-sm rounded-lg gap-2',
-    lg: 'px-6 py-3 text-base rounded-lg gap-2.5'
+    sm: 'px-3 py-2 text-sm rounded-md gap-4',
+    md: 'px-4 py-2.5 text-sm rounded-lg gap-6',
+    lg: 'px-6 py-3 text-base rounded-lg gap-8'
   };
 
   // Combine all styles
@@ -99,7 +100,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({
       <div className={cn('flex items-center', isLoading && 'opacity-0')}>
         {leftIcon && <span className="flex-shrink-0">{leftIcon}</span>}
         <span>{children}</span>
-        {rightIcon && <span className="flex-shrink-0">{rightIcon}</span>}
+        {rightIcon && <span className="flex-shrink-0 mx-2">{rightIcon}</span>}
       </div>
     </button>
   );

@@ -174,17 +174,17 @@ export function ContactForm() {
           
           {/* Trust microcopy */}
           <div className="mt-6 text-sm text-gray-500">
-            <span className="inline-flex items-center gap-1">
+            <span className="inline-flex items-center gap-2">
               <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full block" />
               Takes ~30 seconds
             </span>
             <span className="mx-3">•</span>
-            <span className="inline-flex items-center gap-1">
+            <span className="inline-flex items-center gap-2">
               <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full block" />
               No spam, ever
             </span>
             <span className="mx-3">•</span>
-            <span className="inline-flex items-center gap-1">
+            <span className="inline-flex items-center gap-2">
               <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full block" />
               1 business day reply
             </span>

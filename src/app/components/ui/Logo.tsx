@@ -32,16 +32,18 @@ export const Logo = React.forwardRef<HTMLDivElement, LogoProps>(({
     className
   );
 
-  // Logo icon (simple geometric shape for now - replace with actual logo)
+  // Logo icon using drive_centric_logo JPG
   const LogoIcon = () => (
-    <div className={cn(
-      'rounded-lg bg-gradient-to-br from-blue-500 to-emerald-500 flex items-center justify-center text-white font-bold',
-      size === 'sm' && 'w-6 h-6 text-xs',
-      size === 'md' && 'w-8 h-8 text-sm', 
-      size === 'lg' && 'w-10 h-10 text-base'
-    )}>
-      EW
-    </div>
+    <img 
+      src="/drive_centric_logo.jpg" 
+      alt="Drive Centric Logo"
+      className={cn(
+        'object-contain rounded',
+        size === 'sm' && 'w-6 h-6',
+        size === 'md' && 'w-8 h-8', 
+        size === 'lg' && 'w-10 h-10'
+      )}
+    />
   );
 
   const content = (

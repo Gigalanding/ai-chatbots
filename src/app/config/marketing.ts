@@ -1,7 +1,7 @@
 // Marketing configuration - central place for all copy, branding, and settings
 export const marketing = {
   brandName: "EduWorkflow Labs",
-  brandTagline: "Streamline teaching workflows—without sacrificing quality.",
+  brandTagline: "Streamline teaching workflows — without sacrificing quality.",
   targetAudience: "K–12 teachers, professors, tutors, and edtech teams",
   primaryCTA: "Book a 15‑minute call",
   secondaryCTA: "Share your workflow",
@@ -9,7 +9,7 @@ export const marketing = {
   // Value proposition bullets
   valueBullets: [
     "Cut busywork with smart automation & simpler flows",
-    "Fewer disconnected tools—more teaching time",
+    "Fewer disconnected tools — more teaching time",
     "Faster planning, grading, and communication"
   ],
   
@@ -47,7 +47,7 @@ export const marketing = {
   faq: [
     {
       q: "Is this a sales call?",
-      a: "No. It's a 15–30 minute discovery chat to learn about your current workflow and pain points. If there's a fit later, great—if not, you still get value."
+      a: "No. It's a 15–30 minute discovery chat to learn about your current workflow and pain points. If there's a fit later, great — if not, you still get value."
     },
     {
       q: "What do I get out of it?",
@@ -79,8 +79,8 @@ export const marketing = {
   // Legal and company information
   legal: {
     companyName: "EduWorkflow Labs LLC",
-    address: "1234 Innovation Drive, Suite 567, Austin, TX 78701",
-    email: "contact@eduworkflowlabs.com",
+    address: "Nova Tower 1, 1 Allegheny Square E Suite 500, Pittsburgh, PA 15212, United States",
+    email: "contact@eduworkflow.com",
     phone: "(555) 123-4567"
   },
   
@@ -150,7 +150,7 @@ export const marketing = {
 // A/B testing variants
 export const experimentVariants = {
   headline: {
-    A: "Streamline teaching workflows—without sacrificing quality",
+    A: "Streamline teaching workflows — without sacrificing quality",
     B: "Drowning in admin tasks? Cut busywork and get back to teaching"
   },
   cta: {
