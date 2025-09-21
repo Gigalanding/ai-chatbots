@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { ArrowRight, Calendar, Users } from 'lucide-react';
+import { ArrowRight, Calendar, Users, CheckCircle2, Shield, Clock } from 'lucide-react';
 import { Button, Section, Container } from '@/app/components/ui';
 import { marketing, experimentVariants } from '@/app/config/marketing';
 import { SocialProof } from './SocialProof';
@@ -90,9 +90,9 @@ export function Hero() {
           {/* Value bullets */}
           <div className="grid sm:grid-cols-3 gap-4 mb-10 text-gray-700">
             {marketing.valueBullets.map((bullet, index) => (
-              <div key={index} className="flex items-center justify-center sm:justify-start gap-2">
-                <span className="w-2 h-2 bg-emerald-500 rounded-full flex-shrink-0 block" />
-                <span className="text-sm sm:text-base">{bullet}</span>
+              <div key={index} className="flex items-center justify-center sm:justify-start gap-3 bg-white/50 backdrop-blur-sm rounded-lg px-4 py-3 border border-white/60 shadow-sm">
+                <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
+                <span className="text-sm sm:text-base font-medium">{bullet}</span>
               </div>
             ))}
           </div>
@@ -128,17 +128,17 @@ export function Hero() {
           {/* Trust microcopy */}
           <div className="text-sm text-gray-500 mb-12">
             <span className="inline-flex items-center gap-2">
-              <span className="w-2 h-2 bg-emerald-500 rounded-full block" />
+              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
               No sales pitch
             </span>
             <span className="mx-3">•</span>
             <span className="inline-flex items-center gap-2">
-              <span className="w-2 h-2 bg-emerald-500 rounded-full block" />
+              <Clock className="w-4 h-4 text-blue-600" />
               15–30 minutes
             </span>
             <span className="mx-3">•</span>
             <span className="inline-flex items-center gap-2">
-              <span className="w-2 h-2 bg-emerald-500 rounded-full block" />
+              <Shield className="w-4 h-4 text-purple-600" />
               Privacy-first
             </span>
           </div>

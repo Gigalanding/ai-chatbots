@@ -49,19 +49,21 @@ export function HowItWorks() {
             return (
               <div key={index} className="relative">
                 {/* Step number and icon */}
-                <div className="flex items-center mb-6">
-                  <div className="w-12 h-12 bg-blue-600 text-white rounded-lg flex items-center justify-center font-bold text-lg mr-4">
+                <div className="flex items-center mb-6 relative z-10">
+                  <div className="w-12 h-12 bg-blue-600 text-white rounded-lg flex items-center justify-center font-bold text-lg mr-4 shadow-sm">
                     {step.step}
                   </div>
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center shadow-sm">
                     <IconComponent className="w-6 h-6 text-blue-600" />
                   </div>
                 </div>
 
                 {/* Connecting arrow for desktop */}
                 {!isLastStep && (
-                  <div className="hidden md:block absolute top-6 left-full w-full">
-                    <ArrowRight className="w-6 h-6 text-gray-300 mx-auto" />
+                  <div className="hidden md:block absolute top-1/2 -translate-y-1/2 left-full z-20 -translate-x-4">
+                    <div className="flex justify-center">
+                      <ArrowRight className="w-6 h-6 text-gray-400" />
+                    </div>
                   </div>
                 )}
 
