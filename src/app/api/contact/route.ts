@@ -1,13 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z, ZodError } from 'zod';
-import { supabaseServer } from '@/lib/supabase/server';
-
-// Helper to temporarily bypass Supabase strict typing until database is set up
-const supabaseClient = supabaseServer as unknown as { 
-  from: (table: string) => {
-    insert: (data: unknown[]) => { select: () => { single: () => Promise<{ data: unknown; error: unknown }> } };
-  }
-};
+import nodemailer from 'nodemailer';
 
 // Ensure Node.js runtime for server-side operations
 export const runtime = 'nodejs';
@@ -74,8 +67,80 @@ function getClientIP(request: NextRequest): string {
 }
 
 /**
+ * Send notification email with contact form data
+ */
+async function sendNotificationEmail(contactData: {
+  name: string;
+  email: string;
+  role: string;
+  organization: string;
+  painPoint: string;
+  utmSource: string | null;
+  utmMedium: string | null;
+  utmCampaign: string | null;
+  ip: string;
+  timestamp: string;
+}) {
+  // Create SMTP transporter
+  const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST || 'smtp.gmail.com',
+    port: parseInt(process.env.SMTP_PORT || '587'),
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
+  });
+
+  // Email content
+  const emailContent = `
+New Contact Form Submission - EduWorkflow Labs
+
+Contact Details:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Name: ${contactData.name}
+Email: ${contactData.email}
+Role: ${contactData.role}
+Organization: ${contactData.organization}
+
+Workflow Challenge:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${contactData.painPoint}
+
+Marketing Attribution:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+UTM Source: ${contactData.utmSource || 'Direct'}
+UTM Medium: ${contactData.utmMedium || 'N/A'}
+UTM Campaign: ${contactData.utmCampaign || 'N/A'}
+
+Technical Details:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+IP Address: ${contactData.ip}
+Timestamp: ${new Date(contactData.timestamp).toLocaleString()}
+Source: Landing Page
+
+Next Steps:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Reply within 1 business day
+2. Provide tailored workflow recommendations
+3. Offer discovery call if appropriate
+  `;
+
+  // Send email
+  await transporter.sendMail({
+    from: `"EduWorkflow Labs" <${process.env.SMTP_USER}>`,
+    to: 'contact@eduworkflow.com',
+    subject: `New Lead: ${contactData.name} (${contactData.role})`,
+    text: emailContent,
+    replyTo: contactData.email,
+  });
+
+  console.log('Notification email sent to contact@eduworkflow.com');
+}
+
+/**
  * POST /api/contact
- * Handles contact form submissions with validation, rate limiting, and Supabase storage
+ * Handles contact form submissions with validation, rate limiting, and email notifications
  */
 export async function POST(request: NextRequest) {
   try {
@@ -111,49 +176,29 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Prepare data for database insertion
+    // Prepare contact data for email
     const contactData = {
       name: validatedData.name.trim(),
       email: validatedData.email.toLowerCase().trim(),
       role: validatedData.role.trim(),
-      organization: validatedData.organization?.trim() || null,
-      pain_point: validatedData.painPoint.trim(),
-      source: 'landing',
-      consent: validatedData.consent,
-      utm_source: validatedData.utm_source || null,
-      utm_medium: validatedData.utm_medium || null,
-      utm_campaign: validatedData.utm_campaign || null,
-      ip: clientIP
+      organization: validatedData.organization?.trim() || 'Not provided',
+      painPoint: validatedData.painPoint.trim(),
+      utmSource: validatedData.utm_source || null,
+      utmMedium: validatedData.utm_medium || null,
+      utmCampaign: validatedData.utm_campaign || null,
+      ip: clientIP,
+      timestamp: new Date().toISOString()
     };
 
-    // Insert into Supabase
-    const { data, error } = await supabaseClient
-      .from('contacts')
-      .insert([contactData])
-      .select()
-      .single();
+    // Send notification email
+    await sendNotificationEmail(contactData);
 
-    if (error) {
-      console.error('Supabase error:', error);
-      return NextResponse.json(
-        { 
-          success: false, 
-          message: 'Failed to save contact information. Please try again.' 
-        },
-        { status: 500 }
-      );
-    }
-
-    // Log successful submission (remove in production or use proper logging)
-    console.log('Contact submission successful');
-
-    // TODO: Send notification email (optional)
-    // await sendNotificationEmail(contactData);
+    // Log successful submission
+    console.log('Contact submission successful:', contactData.email);
 
     return NextResponse.json({
       success: true,
-      message: 'Thank you! We\'ll be in touch within 1 business day.',
-      id: (data as { id?: string })?.id || 'unknown'
+      message: 'Thank you! We\'ll be in touch within 1 business day.'
     });
 
   } catch (error) {

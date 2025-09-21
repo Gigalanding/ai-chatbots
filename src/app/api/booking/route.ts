@@ -1,15 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z, ZodError } from 'zod';
-import { supabaseServer } from '@/lib/supabase/server';
-import type { NewBooking } from '@/lib/supabase/types';
-
-// Helper to temporarily bypass Supabase strict typing until database is set up
-const supabaseClient = supabaseServer as unknown as { 
-  from: (table: string) => {
-    insert: (data: unknown[]) => { select: () => { single: () => Promise<{ data: unknown; error: unknown }> } };
-    upsert: (data: unknown[], options: unknown) => { select: () => { single: () => Promise<{ data: unknown; error: unknown }> } };
-  }
-};
+import nodemailer from 'nodemailer';
 
 // Ensure Node.js runtime for server-side operations
 export const runtime = 'nodejs';
@@ -97,6 +88,104 @@ function getClientIP(request: NextRequest): string {
 }
 
 /**
+ * Send booking notification email
+ */
+async function sendBookingNotificationEmail(bookingData: {
+  name: string;
+  email: string;
+  role: string;
+  organization: string;
+  timezone?: string | null;
+  slotStart?: string;
+  slotEnd?: string;
+  eventId?: string;
+  status?: string;
+  notes?: string | null;
+  source: string;
+  utmSource?: string | null;
+  utmMedium?: string | null;
+  utmCampaign?: string | null;
+  ip: string;
+  timestamp: string;
+}) {
+  // Create SMTP transporter
+  const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST || 'smtp.gmail.com',
+    port: parseInt(process.env.SMTP_PORT || '587'),
+    secure: false,
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
+  });
+
+  // Format date/time if available
+  const formatDateTime = (dateString: string | undefined) => {
+    if (!dateString) return 'Not specified';
+    return new Date(dateString).toLocaleString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      timeZoneName: 'short'
+    });
+  };
+
+  const emailContent = `
+${bookingData.status === 'cancelled' ? 'CANCELLED BOOKING' : 'NEW BOOKING'} - EduWorkflow Labs
+
+Contact Details:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Name: ${bookingData.name}
+Email: ${bookingData.email}
+Role: ${bookingData.role}
+Organization: ${bookingData.organization}
+${bookingData.timezone ? `Timezone: ${bookingData.timezone}` : ''}
+
+Meeting Details:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${bookingData.slotStart ? `Start: ${formatDateTime(bookingData.slotStart)}` : 'Time: Not specified'}
+${bookingData.slotEnd ? `End: ${formatDateTime(bookingData.slotEnd)}` : ''}
+${bookingData.eventId ? `Event ID: ${bookingData.eventId}` : ''}
+Status: ${bookingData.status || 'Requested'}
+
+${bookingData.notes ? `Additional Notes:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n${bookingData.notes}\n` : ''}
+
+Marketing Attribution:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+UTM Source: ${bookingData.utmSource || 'Direct'}
+UTM Medium: ${bookingData.utmMedium || 'N/A'}
+UTM Campaign: ${bookingData.utmCampaign || 'N/A'}
+
+Technical Details:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Source: ${bookingData.source}
+IP Address: ${bookingData.ip}
+Timestamp: ${new Date(bookingData.timestamp).toLocaleString()}
+
+${bookingData.status !== 'cancelled' ? `Next Steps:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Add to calendar if not synced automatically
+2. Prepare discovery questions based on their role
+3. Send calendar invite with meeting details
+4. Prepare tailored workflow recommendations` : ''}
+  `;
+
+  // Send email
+  await transporter.sendMail({
+    from: `"EduWorkflow Labs" <${process.env.SMTP_USER}>`,
+    to: 'contact@eduworkflow.com',
+    subject: `${bookingData.status === 'cancelled' ? 'CANCELLED' : 'NEW'} Booking: ${bookingData.name} (${bookingData.role})`,
+    text: emailContent,
+    replyTo: bookingData.email,
+  });
+
+  console.log(`Booking notification email sent to contact@eduworkflow.com (${bookingData.status || 'new'})`);
+}
+
+/**
  * POST /api/booking
  * Handles booking requests and webhook data from Cal.com/Calendly
  */
@@ -157,46 +246,32 @@ export async function POST(request: NextRequest) {
 }
 
 /**
- * Handle direct booking requests (optional feature)
+ * Handle direct booking requests (redirects to Cal.com)
  */
 async function handleBookingRequest(body: unknown, clientIP: string) {
   const validatedData = bookingSchema.parse(body);
 
-  const bookingData: NewBooking = {
+  // Send notification email about booking interest
+  await sendBookingNotificationEmail({
     name: validatedData.name.trim(),
     email: validatedData.email.toLowerCase().trim(),
-    role: validatedData.role?.trim() || null,
-    organization: validatedData.organization?.trim() || null,
-    timezone: validatedData.timezone || null,
-    slot_start: validatedData.slot_start || null,
-    slot_end: validatedData.slot_end || null,
-    external_event_id: validatedData.external_event_id || null,
-    status: 'requested',
+    role: validatedData.role?.trim() || 'Not specified',
+    organization: validatedData.organization?.trim() || 'Not specified',
     notes: validatedData.notes?.trim() || null,
-    source: 'landing',
-    utm_source: validatedData.utm_source || null,
-    utm_medium: validatedData.utm_medium || null,
-    utm_campaign: validatedData.utm_campaign || null,
-    ip: clientIP
-  };
+    source: 'direct_request',
+    utmSource: validatedData.utm_source || null,
+    utmMedium: validatedData.utm_medium || null,
+    utmCampaign: validatedData.utm_campaign || null,
+    ip: clientIP,
+    timestamp: new Date().toISOString()
+  });
 
-  const { data, error } = await supabaseClient
-    .from('bookings')
-    .insert([bookingData])
-    .select()
-    .single();
-
-  if (error) {
-    console.error('Supabase booking error:', error);
-    throw new Error('Failed to save booking request');
-  }
-
-  console.log('Booking request successful');
+  console.log('Booking request notification sent');
 
   return NextResponse.json({
     success: true,
-    message: 'Booking request submitted successfully.',
-    id: (data as { id?: string })?.id || 'unknown'
+    message: 'Thank you! Please use the Cal.com booking widget to schedule your call.',
+    calcom_url: `https://cal.com/${process.env.CALCOM_USERNAME || 'eduworkflow'}/intro`
   });
 }
 
@@ -212,35 +287,22 @@ async function handleWebhook(body: unknown, clientIP: string) {
   const roleAnswer = answers.find(a => a.question.toLowerCase().includes('role'));
   const orgAnswer = answers.find(a => a.question.toLowerCase().includes('organization') || a.question.toLowerCase().includes('school'));
 
-  const bookingData: NewBooking = {
+  // Send booking notification email
+  await sendBookingNotificationEmail({
     name: event.invitee.name,
     email: event.invitee.email,
-    role: roleAnswer?.answer || null,
-    organization: orgAnswer?.answer || null,
+    role: roleAnswer?.answer || 'Not specified',
+    organization: orgAnswer?.answer || 'Not specified',
     timezone: event.invitee.timezone || null,
-    slot_start: event.start_time,
-    slot_end: event.end_time,
-    external_event_id: event.id,
+    slotStart: event.start_time,
+    slotEnd: event.end_time,
+    eventId: event.id,
     status: validatedWebhook.event_type === 'booking.cancelled' ? 'cancelled' : 'confirmed',
     notes: answers.map(a => `${a.question}: ${a.answer}`).join('\n') || null,
-    source: 'webhook',
-    ip: clientIP
-  };
-
-  // Upsert booking (update if exists, insert if new)
-  const { error } = await supabaseClient
-    .from('bookings')
-    .upsert([bookingData], { 
-      onConflict: 'external_event_id',
-      ignoreDuplicates: false 
-    })
-    .select()
-    .single();
-
-  if (error) {
-    console.error('Supabase webhook error:', error);
-    throw new Error('Failed to process webhook');
-  }
+    source: 'cal.com_webhook',
+    ip: clientIP,
+    timestamp: new Date().toISOString()
+  });
 
   console.log('Webhook processed:', {
     event_type: validatedWebhook.event_type,
