@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { ArrowRight, Calendar, MapPin, CheckCircle2, Shield, Clock } from 'lucide-react';
+import { ArrowRight, Calendar, CheckCircle2, Shield, Clock } from 'lucide-react';
 import { Button, Section, Container } from '@/app/components/ui';
 import { marketing, experimentVariants } from '@/app/config/marketing';
 import { SocialProof } from './SocialProof';
@@ -71,12 +71,6 @@ export function Hero() {
       
       <Container className="relative">
         <div className="text-center max-w-4xl mx-auto">
-          {/* Badge/Trust signal */}
-          <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-full px-3 py-1.5 text-sm text-gray-600 border border-gray-200 mb-6">
-            <MapPin className="w-4 h-4 text-emerald-600" />
-            <span>Built in Darmstadt, Germany</span>
-          </div>
-
           {/* Main headline */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
             {headline}

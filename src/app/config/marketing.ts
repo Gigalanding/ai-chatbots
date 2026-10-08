@@ -13,11 +13,13 @@ export const marketing = {
     "Faster planning, grading, and communication"
   ],
   
-  // Institutions shown in the hero (names only, no logos)
+  // Institutions shown in the hero
   institutions: [
-    "TU Darmstadt",
-    "Hochschule Darmstadt",
-    "TH Deggendorf"
+    { name: "TU Darmstadt", src: "/logos/tu-darmstadt.svg", height: 44 },
+    { name: "Hochschule Darmstadt (h_da)", src: "/logos/h-da.svg", height: 52 },
+    { name: "Technische Hochschule Deggendorf", src: "/logos/th-deggendorf.svg", height: 30 },
+    { name: "Universität Regensburg", src: "/logos/uni-regensburg.svg", height: 44 },
+    { name: "hessian.AI", src: "/logos/hessian-ai.svg", height: 30 }
   ],
 
   // Product pipeline (how the learning platform works)
