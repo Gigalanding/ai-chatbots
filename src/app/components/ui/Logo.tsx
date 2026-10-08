@@ -32,13 +32,14 @@ export const Logo = React.forwardRef<HTMLDivElement, LogoProps>(({
     className
   );
 
-  // Logo icon using drive_centric_logo JPG
+  // Logo icon (Easy Knowledge mark)
   const LogoIcon = () => (
     <img 
-      src="/drive_centric_logo.jpg" 
-      alt="Drive Centric Logo"
+      src="/easy-knowledge-logo.png" 
+      alt=""
+      aria-hidden="true"
       className={cn(
-        'object-contain rounded',
+        'object-contain rounded-full',
         size === 'sm' && 'w-6 h-6',
         size === 'md' && 'w-8 h-8', 
         size === 'lg' && 'w-10 h-10'

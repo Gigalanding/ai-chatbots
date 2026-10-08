@@ -15,7 +15,7 @@ export function Navigation() {
   // Navigation items
   const navItems = [
     { label: 'How it works', href: '#how-it-works' },
-    { label: 'Success stories', href: '#testimonials' },
+    { label: 'Product', href: '#product' },
     { label: 'FAQ', href: '#faq' }
   ];
 

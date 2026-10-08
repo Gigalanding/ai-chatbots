@@ -3,5 +3,5 @@ export { Hero } from './Hero';
 export { SocialProof } from './SocialProof';
 export { PainPoints } from './PainPoints';
 export { HowItWorks } from './HowItWorks';
-export { Testimonials } from './Testimonials';
+export { Product } from './Product';
 export { FAQ } from './FAQ';

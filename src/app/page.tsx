@@ -7,7 +7,7 @@ import {
   Hero, 
   PainPoints, 
   HowItWorks, 
-  Testimonials, 
+  Product, 
   FAQ 
 } from '@/app/components/sections';
 import { BookingEmbed } from '@/app/components/booking';
@@ -85,11 +85,11 @@ export default function LandingPage() {
         {/* Pain points - emotional connection */}
         <PainPoints />
 
+        {/* Product pipeline - what the platform does */}
+        <Product />
+
         {/* How it works - reducing friction */}
         <HowItWorks />
-
-        {/* Social proof - testimonials */}
-        <Testimonials />
 
         {/* Booking section - primary conversion point */}
         <BookingEmbed />

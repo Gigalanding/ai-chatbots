@@ -129,13 +129,13 @@ Next Steps:
   // Send email
   await transporter.sendMail({
     from: `"EduWorkflow Labs" <${process.env.SMTP_USER}>`,
-    to: 'contact@eduworkflow.com',
+    to: 'support@eduworkflow.org',
     subject: `New Lead: ${contactData.name} (${contactData.role})`,
     text: emailContent,
     replyTo: contactData.email,
   });
 
-  console.log('Notification email sent to contact@eduworkflow.com');
+  console.log('Notification email sent to support@eduworkflow.org');
 }
 
 /**

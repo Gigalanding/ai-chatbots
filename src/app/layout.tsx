@@ -31,7 +31,9 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  manifest: '/manifest.json', // Add web app manifest later
+  icons: {
+    apple: '/apple-touch-icon.png',
+  },
   other: {
     'theme-color': marketing.colors.primary,
   },
@@ -96,7 +98,8 @@ export default function RootLayout({
                   },
                   "address": {
                     "@type": "PostalAddress",
-                    "addressLocality": marketing.legal.address
+                    "addressLocality": marketing.legal.city,
+                    "addressCountry": marketing.legal.countryCode
                   }
                 },
                 {

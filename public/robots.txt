@@ -11,7 +11,7 @@ Disallow: /_next/
 Disallow: /thank-you/
 
 # Point to sitemap
-Sitemap: https://YOUR_DOMAIN.com/sitemap.xml
+Sitemap: https://www.eduworkflow.org/sitemap.xml
 
 # Crawl delay (optional - helps prevent overwhelming server)
 Crawl-delay: 1

@@ -13,36 +13,58 @@ export const marketing = {
     "Faster planning, grading, and communication"
   ],
   
-  // Social proof logos (replace with your actual logos)
-  socialProofLogos: [
-    { alt: "Metro School District", src: "/logos/metro-district.svg" },
-    { alt: "State University", src: "/logos/state-university.svg" },
-    { alt: "EduTech Partners", src: "/logos/edutech-partners.svg" },
-    { alt: "Teachers Academy", src: "/logos/teachers-academy.svg" }
+  // Institutions shown in the hero (names only, no logos)
+  institutions: [
+    "TU Darmstadt",
+    "Hochschule Darmstadt",
+    "TH Deggendorf"
   ],
-  
-  // Customer testimonials
-  testimonials: [
+
+  // Product pipeline (how the learning platform works)
+  productPipeline: [
     {
-      quote: "The call was refreshingly practical. They understood our day-to-day pain and suggested quick wins we actually used.",
-      author: "Dr. Sarah Chen",
-      title: "Department Chair, Midwestern University",
-      rating: 5
+      step: 1,
+      icon: "Upload",
+      title: "Add your material",
+      description: "Upload a PDF book or lecture script, paste text, or add a link. The course material stays the single source of truth."
     },
     {
-      quote: "Our teachers saved hours a week after adopting the workflow changes discussed. Zero fluff, all value.",
-      author: "Marcus Thompson",
-      title: "Principal, Lincoln K–12 District",
-      rating: 5
+      step: 2,
+      icon: "BookOpen",
+      title: "Read and highlight",
+      description: "Students read in a built-in reader. Highlights and snippets become notes, each linked back to its page."
     },
     {
-      quote: "Finally, someone who gets that we need practical solutions, not another complex platform to learn.",
-      author: "Jennifer Rodriguez",
-      title: "High School Math Teacher",
-      rating: 5
+      step: 3,
+      icon: "Sparkles",
+      title: "Generate quizzes with AI",
+      description: "Pick a section, question type, difficulty, language and number of questions. Questions are generated from that exact material."
+    },
+    {
+      step: 4,
+      icon: "BarChart3",
+      title: "Practice and review",
+      description: "Students take the quiz and see their results. Teachers rate, edit or remove questions, so every quiz gets better over time."
     }
   ],
-  
+
+  productScreens: [
+    {
+      src: "/product-reader.webp",
+      width: 1600,
+      height: 785,
+      title: "Reader with notes",
+      caption: "Read the material, highlight passages and keep page-linked notes next to the text."
+    },
+    {
+      src: "/product-quiz.webp",
+      width: 1600,
+      height: 788,
+      title: "Quiz generator",
+      caption: "Generate multiple-choice quizzes from a book or section, then rate and edit each question."
+    }
+  ],
+
   // FAQ addressing common objections
   faq: [
     {
@@ -78,10 +100,11 @@ export const marketing = {
   
   // Legal and company information
   legal: {
-    companyName: "EduWorkflow Labs LLC",
-    address: "Nova Tower 1, 1 Allegheny Square E Suite 500, Pittsburgh, PA 15212, United States",
-    email: "contact@eduworkflow.com",
-    phone: "(555) 123-4567"
+    companyName: "EduWorkflow Labs",
+    address: "Darmstadt, Germany",
+    city: "Darmstadt",
+    countryCode: "DE",
+    email: "support@eduworkflow.org"
   },
   
   // Booking system configuration

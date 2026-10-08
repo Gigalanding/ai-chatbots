@@ -176,13 +176,13 @@ ${bookingData.status !== 'cancelled' ? `Next Steps:
   // Send email
   await transporter.sendMail({
     from: `"EduWorkflow Labs" <${process.env.SMTP_USER}>`,
-    to: 'contact@eduworkflow.com',
+    to: 'support@eduworkflow.org',
     subject: `${bookingData.status === 'cancelled' ? 'CANCELLED' : 'NEW'} Booking: ${bookingData.name} (${bookingData.role})`,
     text: emailContent,
     replyTo: bookingData.email,
   });
 
-  console.log(`Booking notification email sent to contact@eduworkflow.com (${bookingData.status || 'new'})`);
+  console.log(`Booking notification email sent to support@eduworkflow.org (${bookingData.status || 'new'})`);
 }
 
 /**

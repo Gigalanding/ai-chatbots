@@ -61,10 +61,10 @@ export function Footer() {
                 </li>
                 <li>
                   <a 
-                    href="#testimonials" 
+                    href="#product" 
                     className="hover:text-white transition-colors"
                   >
-                    Success Stories
+                    Product
                   </a>
                 </li>
                 <li>

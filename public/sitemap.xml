@@ -6,24 +6,24 @@
         
   <!-- Homepage -->
   <url>
-    <loc>https://YOUR_DOMAIN.com/</loc>
-    <lastmod>2024-01-15T00:00:00Z</lastmod>
+    <loc>https://www.eduworkflow.org/</loc>
+    <lastmod>2026-10-08T00:00:00Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   
   <!-- Privacy Policy -->
   <url>
-    <loc>https://YOUR_DOMAIN.com/privacy</loc>
-    <lastmod>2024-01-15T00:00:00Z</lastmod>
+    <loc>https://www.eduworkflow.org/privacy</loc>
+    <lastmod>2026-10-08T00:00:00Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
   
   <!-- Terms of Service -->
   <url>
-    <loc>https://YOUR_DOMAIN.com/terms</loc>
-    <lastmod>2024-01-15T00:00:00Z</lastmod>
+    <loc>https://www.eduworkflow.org/terms</loc>
+    <lastmod>2026-10-08T00:00:00Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
