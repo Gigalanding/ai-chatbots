@@ -26,7 +26,8 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(({
   ...props
 }, ref) => {
   // Generate unique IDs for accessibility
-  const textareaId = id || `textarea-${Math.random().toString(36).substr(2, 9)}`;
+  const generatedId = React.useId();
+  const textareaId = id || `textarea-${generatedId}`;
   const errorId = error ? `${textareaId}-error` : undefined;
   const helperId = helperText ? `${textareaId}-helper` : undefined;
 

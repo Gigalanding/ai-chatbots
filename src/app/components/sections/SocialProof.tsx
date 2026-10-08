@@ -7,23 +7,22 @@ import { marketing } from '@/app/config/marketing';
  */
 export function SocialProof() {
   return (
-    <div className="text-center">
-      <div className="text-sm text-gray-500 mb-5 font-medium">
+    <div className="institution-strip">
+      <p>
         Working with educators, students and researchers from
-      </div>
+      </p>
 
-      <ul className="flex flex-wrap items-center justify-center gap-3 lg:-mx-20">
+      <ul>
         {marketing.institutions.map((inst) => (
           <li
             key={inst.name}
-            className="flex items-center justify-center h-[68px] px-4 bg-white rounded-xl border border-gray-200/80 shadow-sm"
           >
             <img
               src={inst.src}
               alt={inst.name}
               title={inst.name}
               style={{ height: inst.height }}
-              className="w-auto max-w-[220px] object-contain"
+              className="object-contain"
               loading="eager"
             />
           </li>

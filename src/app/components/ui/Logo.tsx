@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { marketing } from '@/app/config/marketing';
 
@@ -34,8 +35,11 @@ export const Logo = React.forwardRef<HTMLDivElement, LogoProps>(({
 
   // Logo icon (Easy Knowledge mark)
   const LogoIcon = () => (
-    <img 
-      src="/easy-knowledge-logo.png" 
+    <Image
+      src="/easy-knowledge-logo.png"
+      width={32}
+      height={32}
+      unoptimized
       alt=""
       aria-hidden="true"
       className={cn(

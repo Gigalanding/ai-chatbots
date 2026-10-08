@@ -154,25 +154,9 @@ export function BookingEmbed() {
             {marketing.primaryCTA}
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Choose a time that works for you. Our {marketing.booking.meetingLength}-minute discovery call 
-            will help us understand your workflow challenges and share relevant solutions.
+            Choose a time that works for you. We’ll use the conversation to understand your workflow
+            challenges and share relevant solutions.
           </p>
-          
-          {/* Trust indicators */}
-          <div className="mt-6 flex flex-wrap justify-center gap-6 text-sm text-gray-500">
-            <span className="flex items-center gap-2">
-              <span className="w-2 h-2 bg-emerald-500 rounded-full block" />
-              {marketing.booking.meetingLength} minutes
-            </span>
-            <span className="flex items-center gap-2">
-              <span className="w-2 h-2 bg-blue-500 rounded-full block" />
-              No sales pressure
-            </span>
-            <span className="flex items-center gap-2">
-              <span className="w-2 h-2 bg-purple-500 rounded-full block" />
-              Tailored recommendations
-            </span>
-          </div>
         </div>
 
         {/* Booking embed based on provider */}

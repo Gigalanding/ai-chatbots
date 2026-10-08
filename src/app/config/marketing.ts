@@ -15,11 +15,11 @@ export const marketing = {
   
   // Institutions shown in the hero
   institutions: [
-    { name: "TU Darmstadt", src: "/logos/tu-darmstadt.svg", height: 44 },
-    { name: "Hochschule Darmstadt (h_da)", src: "/logos/h-da.svg", height: 52 },
-    { name: "Technische Hochschule Deggendorf", src: "/logos/th-deggendorf.svg", height: 30 },
-    { name: "Universität Regensburg", src: "/logos/uni-regensburg.svg", height: 44 },
-    { name: "hessian.AI", src: "/logos/hessian-ai.svg", height: 30 }
+    { name: "TU Darmstadt", src: "/logos/tu-darmstadt.svg", height: 54 },
+    { name: "Hochschule Darmstadt (h_da)", src: "/logos/h-da.svg", height: 58 },
+    { name: "Technische Hochschule Deggendorf", src: "/logos/th-deggendorf.svg", height: 42 },
+    { name: "Universität Regensburg", src: "/logos/uni-regensburg.svg", height: 54 },
+    { name: "hessian.AI", src: "/logos/hessian-ai.svg", height: 42 }
   ],
 
   // Product pipeline (how the learning platform works)
@@ -120,7 +120,7 @@ export const marketing = {
   
   // Brand colors and styling
   colors: {
-    primary: "#3B82F6", // Blue-500
+    primary: "#35482e", // Forest
     accent: "#10B981",  // Emerald-500
     secondary: "#6B7280" // Gray-500
   },

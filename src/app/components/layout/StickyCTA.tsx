@@ -7,7 +7,7 @@ import { experimentVariants } from '@/app/config/marketing';
 import { cn } from '@/lib/utils';
 
 /**
- * Sticky CTA component that appears on mobile bottom and desktop top-right
+ * Mobile CTA; desktop keeps its booking action in the sticky navigation
  * Tracks analytics and supports A/B testing variants
  */
 export function StickyCTA() {
@@ -36,7 +36,8 @@ export function StickyCTA() {
         return urlVariant.toUpperCase() as 'A' | 'B';
       }
       
-      const stored = localStorage.getItem('experiment-variant');
+      let stored: string | null = null;
+      try { stored = localStorage.getItem('experiment-variant'); } catch { /* Storage is optional. */ }
       if (stored === 'A' || stored === 'B') {
         return stored;
       }
@@ -120,40 +121,6 @@ export function StickyCTA() {
         </div>
       </div>
 
-      {/* Desktop sticky CTA (top-right) */}
-      <div className="fixed top-4 right-4 z-50 hidden md:block">
-        <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-4 max-w-xs">
-          <div className="flex items-start justify-between mb-3">
-            <div>
-              <h4 className="font-semibold text-gray-900 text-sm">
-                Ready to streamline?
-              </h4>
-              <p className="text-xs text-gray-600 mt-1">
-                15-min discovery call
-              </p>
-            </div>
-            
-            <button
-              onClick={handleDismiss}
-              className="text-gray-400 hover:text-gray-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded p-1"
-              aria-label="Dismiss"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          </div>
-          
-          <Button
-            variant="primary"
-            size="sm"
-            rightIcon={<Calendar className="w-4 h-4" />}
-            onClick={handleBookingClick}
-            fullWidth
-            className={ctaConfig.style === 'squared' ? 'rounded-md' : ''}
-          >
-            Book now
-          </Button>
-        </div>
-      </div>
     </>
   );
 }

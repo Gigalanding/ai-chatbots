@@ -1,136 +1,207 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { MessageSquare, Phone, FileCheck, ArrowRight } from 'lucide-react';
-import { Button, Section, Container } from '@/app/components/ui';
-import { marketing } from '@/app/config/marketing';
+import React, { useEffect, useState } from "react";
+import { ArrowRight, Check, ArrowUpRight } from "lucide-react";
+import { marketing } from "@/app/config/marketing";
+import { MotionScene } from "../ui/Motion";
 
-// Icon mapping for dynamic icon selection
-const iconMap = {
-  MessageSquare,
-  Phone,
-  FileCheck
-} as const;
+function DiscoveryVisual({ active }: { active: number }) {
+  return (
+    <MotionScene className={`discovery-scene discovery-${active}`}>
+      <div className="discovery-scene-label">
+        <span className="live-dot" />
+        YOUR NEXT CHAPTER
+      </div>
+      {active === 0 && (
+        <div className="context-scene scene-enter" aria-hidden="true">
+          <div className="scene-document">
+            <span className="eyebrow">LET’S START WITH YOU</span>
+            <h4>
+              Hello, educator<span>↗</span>
+            </h4>
+            <div className="sample-field">
+              <small>YOUR ROLE</small>
+              <span>University lecturer</span>
+            </div>
+            <div className="sample-field">
+              <small>YOUR BIGGEST CHALLENGE</small>
+              <span className="typed-line">
+                More time teaching. Less admin.
+              </span>
+            </div>
+            <div className="scene-send">
+              A little context <ArrowRight size={16} />
+            </div>
+          </div>
+          <span className="floating-note">No long questionnaires.</span>
+        </div>
+      )}
+      {active === 1 && (
+        <div className="call-scene scene-enter" aria-hidden="true">
+          <div className="call-window">
+            <div className="call-window-top">
+              <span>Discovery conversation</span>
+              <span>LIVE</span>
+            </div>
+            <div className="call-people">
+              <div>
+                <span className="call-avatar avatar-teacher">You</span>
+                <small>Your experience</small>
+              </div>
+              <span className="call-wave">
+                <i />
+                <i />
+                <i />
+                <i />
+                <i />
+                <i />
+                <i />
+              </span>
+              <div>
+                <span className="call-avatar avatar-team">Us</span>
+                <small>A fresh perspective</small>
+              </div>
+            </div>
+            <div className="call-bottom">
+              <span className="live-dot" />
+              Good ideas start with listening.
+            </div>
+          </div>
+          <span className="floating-note">
+            All about your workflow.
+          </span>
+        </div>
+      )}
+      {active === 2 && (
+        <div className="recommendation-scene scene-enter" aria-hidden="true">
+          <div className="scene-document">
+            <span className="eyebrow">YOUR WORKFLOW, RECONSIDERED</span>
+            <h4>A plan that fits.</h4>
+            {[
+              "Simplify your tool stack",
+              "Automate the repetitive parts",
+              "Make room for teaching",
+            ].map((text, i) => (
+              <div
+                className="recommendation-line"
+                key={text}
+                style={{ animationDelay: `${i * 140}ms` }}
+              >
+                <span>
+                  <Check size={14} />
+                </span>
+                {text}
+              </div>
+            ))}
+            <div className="recommendation-footer">
+              Practical next steps <ArrowUpRight size={16} />
+            </div>
+          </div>
+          <span className="floating-note">
+            Made for your actual day-to-day.
+          </span>
+        </div>
+      )}
+    </MotionScene>
+  );
+}
 
-/**
- * How It Works section explaining the simple 3-step process
- * Reduces friction by showing how easy and low-commitment it is
- */
 export function HowItWorks() {
-  // Analytics tracking for CTA clicks
-  const trackCTAClick = (location: string, label: string) => {
-    if (typeof window !== 'undefined' && window.plausible) {
-      window.plausible('cta_click', {
-        props: {
-          location,
-          label
-        }
-      });
-    }
-  };
+  const [active, setActive] = useState(0);
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const replay = window.setInterval(() => {
+      setActive((current) => (current + 1) % marketing.howItWorks.length);
+    }, 5000);
+    return () => window.clearInterval(replay);
+  }, []);
 
   return (
-    <Section spacing="xl" id="how-it-works">
-      <Container>
-        <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-            How it works
+    <section id="how-it-works" className="discovery-section editorial-section">
+      <div className="editorial-container">
+        <div className="section-heading centered-heading">
+          <span className="eyebrow">
+            <span /> A SMALL FIRST STEP
+          </span>
+          <h2>
+            How it works.
+            <br />
+            <span className="serif-accent">Human from the start.</span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            A simple, no-pressure process designed to respect your time and deliver immediate value.
-          </p>
         </div>
-
-        <div className="grid md:grid-cols-3 gap-8 md:gap-12 mb-12">
-          {marketing.howItWorks.map((step, index) => {
-            const IconComponent = iconMap[step.icon as keyof typeof iconMap];
-            const isLastStep = index === marketing.howItWorks.length - 1;
-            
-            return (
-              <div key={index} className="relative">
-                {/* Step number and icon */}
-                <div className="flex items-center mb-6 relative z-10">
-                  <div className="w-12 h-12 bg-blue-600 text-white rounded-lg flex items-center justify-center font-bold text-lg mr-4 shadow-sm">
-                    {step.step}
-                  </div>
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center shadow-sm">
-                    <IconComponent className="w-6 h-6 text-blue-600" />
-                  </div>
-                </div>
-
-                {/* Connecting arrow for desktop */}
-                {!isLastStep && (
-                  <div className="hidden md:block absolute top-1/2 -translate-y-1/2 left-full z-20 -translate-x-4">
-                    <div className="flex justify-center">
-                      <ArrowRight className="w-6 h-6 text-gray-400" />
-                    </div>
-                  </div>
-                )}
-
-                <div className="relative z-10">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                    {step.title}
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    {step.description}
-                  </p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Timeline/Process visualization for mobile */}
-        <div className="md:hidden flex justify-center mb-12">
-          <div className="flex items-center space-x-2">
-            {marketing.howItWorks.map((_, index) => (
-              <React.Fragment key={index}>
-                <div className="w-3 h-3 bg-blue-600 rounded-full" />
-                {index < marketing.howItWorks.length - 1 && (
-                  <div className="w-8 h-0.5 bg-gray-300" />
-                )}
-              </React.Fragment>
+        <div className="discovery-layout">
+          <div
+            className="discovery-steps"
+            role="tablist"
+            aria-label="Discovery process"
+            aria-orientation="vertical"
+          >
+            {marketing.howItWorks.map((step, i) => (
+              <button
+                key={step.step}
+                type="button"
+                role="tab"
+                id={`discovery-tab-${i}`}
+                aria-selected={active === i}
+                aria-controls="discovery-panel"
+                tabIndex={active === i ? 0 : -1}
+                className={`discovery-step ${active === i ? "is-active" : ""}`}
+                onClick={() => setActive(i)}
+                onKeyDown={(event) => {
+                  if (
+                    ["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)
+                  ) {
+                    event.preventDefault();
+                    const next =
+                      event.key === "Home"
+                        ? 0
+                        : event.key === "End"
+                          ? 2
+                          : (active + (event.key === "ArrowDown" ? 1 : 2)) % 3;
+                    setActive(next);
+                    document.getElementById(`discovery-tab-${next}`)?.focus();
+                  }
+                }}
+              >
+                <span className="discovery-number">0{step.step}</span>
+                <span className="discovery-step-copy">
+                  <span className="discovery-title">{step.title}</span>
+                </span>
+                <ArrowUpRight
+                  className="discovery-step-arrow"
+                  size={19}
+                  aria-hidden="true"
+                />
+              </button>
             ))}
           </div>
-        </div>
-
-        {/* CTA after process explanation */}
-        <div className="text-center bg-gradient-to-br from-blue-50 to-emerald-50 rounded-2xl p-8 border border-blue-100">
-          <h3 className="text-2xl font-bold text-gray-900 mb-4">
-            Ready to get started?
-          </h3>
-          <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-            Tell us how you teach today. 
-            The first step takes less than 30 seconds.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              size="lg"
-              variant="primary"
-              rightIcon={<Phone className="w-5 h-5" />}
-              onClick={() => {
-                trackCTAClick('how-it-works', 'primary');
-                document.getElementById('book')?.scrollIntoView({ behavior: 'smooth' });
-              }}
-            >
-              {marketing.primaryCTA}
-            </Button>
-            
-            <Button
-              size="lg"
-              variant="outline"
-              rightIcon={<MessageSquare className="w-5 h-5" />}
-              onClick={() => {
-                trackCTAClick('how-it-works', 'secondary');
-                document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-              }}
-            >
-              {marketing.secondaryCTA}
-            </Button>
+          <div
+            role="tabpanel"
+            id="discovery-panel"
+            aria-labelledby={`discovery-tab-${active}`}
+            tabIndex={0}
+          >
+            <DiscoveryVisual key={active} active={active} />
           </div>
         </div>
-      </Container>
-    </Section>
+        <div className="discovery-cta">
+          <span className="eyebrow">
+            <span /> READY WHEN YOU ARE
+          </span>
+          <a
+            href="#book"
+            className="editorial-button button-dark"
+            onClick={() =>
+              window.plausible?.("cta_click", {
+                props: { location: "how-it-works", label: "primary" },
+              })
+            }
+          >
+            {marketing.primaryCTA}
+            <ArrowUpRight size={17} aria-hidden="true" />
+          </a>
+        </div>
+      </div>
+    </section>
   );
 }

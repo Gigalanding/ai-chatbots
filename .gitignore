@@ -2,6 +2,9 @@
 
 # dependencies
 /node_modules
+
+# Generated standalone design preview
+/preview/EduWorkflow-design-preview.html
 /.pnp
 .pnp.*
 .yarn/*

@@ -1,95 +1,166 @@
 'use client';
 
 import React from 'react';
-import { Clock, Puzzle, Users, FileText, ArrowRight } from 'lucide-react';
-import { Button, Section, Container } from '@/app/components/ui';
+import { ArrowUpRight } from 'lucide-react';
 import { marketing } from '@/app/config/marketing';
+import { MotionScene } from '../ui/Motion';
 
-// Icon mapping for dynamic icon selection
-const iconMap = {
-  Clock,
-  Puzzle,
-  Users,
-  FileText
-} as const;
-
-/**
- * Pain Points section that resonates with target audience challenges
- * Builds emotional connection before presenting the solution
- */
-export function PainPoints() {
-  // Analytics tracking for CTA clicks
-  const trackCTAClick = (location: string, label: string) => {
-    if (typeof window !== 'undefined' && window.plausible) {
-      window.plausible('cta_click', {
-        props: {
-          location,
-          label
-        }
-      });
-    }
-  };
-
+function AdminScene() {
   return (
-    <Section spacing="xl" background="gray" id="pain-points">
-      <Container>
-        <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-            Sound familiar?
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            You became an educator to teach and inspire — not to wrestle with endless admin tasks 
-            and disconnected tools that eat up your valuable time.
+    <div className="pain-art admin-art" aria-hidden="true">
+      <div className="scene-meta">
+        <span>THE NEVER-ENDING TO-DO</span>
+        <span className="small-dot" />
+      </div>
+      <div className="task-stack">
+        {['Grade assignments', 'Plan next week', 'Send progress reports'].map((task, i) => (
+          <div className={`task-slip slip-${i}`} key={task}>
+            <span className="empty-check" />
+            <span>{task}</span>
+            <span className="task-time">{['12', '08', '16'][i]}</span>
+          </div>
+        ))}
+      </div>
+      <div className="time-label">
+        <span className="orbit-clock">
+          <span />
+        </span>
+        There goes your afternoon.
+      </div>
+    </div>
+  );
+}
+
+function ToolsScene() {
+  return (
+    <div className="pain-art tools-art" aria-hidden="true">
+      <div className="scene-meta">
+        <span>CONTEXT SWITCHING…</span>
+        <span className="small-dot" />
+      </div>
+      <svg className="tool-wires" viewBox="0 0 280 160" fill="none">
+        <path
+          d="M56 50C160 10 115 125 227 99M55 119C145 145 113 45 226 40"
+          stroke="currentColor"
+          strokeDasharray="4 7"
+        />
+        <path d="m129 78 8 8m0-8-8 8" stroke="currentColor" strokeWidth="2" />
+      </svg>
+      <span className="tool-tile tile-a">
+        <span className="tile-symbol">Aa</span>Docs
+      </span>
+      <span className="tool-tile tile-b">
+        <span className="tile-symbol">▦</span>Calendar
+      </span>
+      <span className="tool-tile tile-c">
+        <span className="tile-symbol">↗</span>Drive
+      </span>
+      <span className="tool-tile tile-d">
+        <span className="tile-symbol">A+</span>Grades
+      </span>
+      <div className="scene-footnote">Your work. All over the place.</div>
+    </div>
+  );
+}
+
+function MessagesScene() {
+  return (
+    <div className="pain-art messages-art" aria-hidden="true">
+      <div className="scene-meta">
+        <span>EVERYONE NEEDS SOMETHING</span>
+        <span className="small-dot" />
+      </div>
+      <div className="message-bubble bubble-a">
+        <span className="mini-avatar">S</span>
+        <span>
+          When is the deadline?<small>Student · just now</small>
+        </span>
+        <span className="message-count">3</span>
+      </div>
+      <div className="message-bubble bubble-b">
+        <span className="mini-avatar">P</span>
+        <span>
+          Just following up…<small>Parent · 2 min ago</small>
+        </span>
+      </div>
+      <div className="typing-bubble">
+        <i />
+        <i />
+        <i />
+        <span>And another message.</span>
+      </div>
+    </div>
+  );
+}
+
+function DocumentsScene() {
+  return (
+    <div className="pain-art documents-art" aria-hidden="true">
+      <div className="scene-meta">
+        <span>COPY. PASTE. REPEAT.</span>
+        <span className="small-dot" />
+      </div>
+      <div className="paper-stack">
+        {[0, 1, 2].map((i) => (
+          <div className={`paper-sheet paper-${i}`} key={i}>
+            <span>Weekly report</span>
+            <i />
+            <i />
+            <i />
+            <i />
+            <b>v{i + 1}.final.pdf</b>
+          </div>
+        ))}
+      </div>
+      <span className="repeat-stamp">Again?</span>
+    </div>
+  );
+}
+
+const scenes = [AdminScene, ToolsScene, MessagesScene, DocumentsScene];
+
+export function PainPoints() {
+  return (
+    <section id="pain-points" className="pain-section editorial-section">
+      <div className="editorial-container">
+        <div className="section-heading split-heading">
+          <div>
+            <span className="eyebrow">
+              <span /> THE EVERYDAY FRICTION
+            </span>
+            <h2>
+              Sound familiar<span className="serif-accent">?</span>
+            </h2>
+          </div>
+          <p>
+            You became an educator to teach and inspire.
+            <br className="desktop-break" /> Somewhere along the way, the busywork took over.
           </p>
         </div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+        <div className="pain-grid">
           {marketing.painPoints.map((pain, index) => {
-            const IconComponent = iconMap[pain.icon as keyof typeof iconMap];
-            
+            const Scene = scenes[index];
             return (
-              <div 
-                key={index}
-                className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
-              >
-                <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
-                  <IconComponent className="w-6 h-6 text-red-600" />
+              <MotionScene key={pain.title} className={`pain-card pain-card-${index}`}>
+                <Scene />
+                <div className="pain-copy">
+                  <span className="item-index">0{index + 1}</span>
+                  <h3>{pain.title}</h3>
+                  <p>{pain.description}.</p>
                 </div>
-                
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  {pain.title}
-                </h3>
-                
-                <p className="text-gray-600 text-sm leading-relaxed">
-                  {pain.description}
-                </p>
-              </div>
+              </MotionScene>
             );
           })}
         </div>
-
-        {/* CTA after pain points */}
-        <div className="text-center bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-          <h3 className="text-2xl font-bold text-gray-900 mb-4">
-            Ready to simplify your workflow?
-          </h3>
-          <p className="text-gray-600 mb-6">
-            Let&apos;s talk about practical solutions that actually work for busy educators.
+        <div className="pain-bottom">
+          <p>
+            Less juggling. <span>More of the work you love.</span>
           </p>
-          
-          <Button
-            size="lg"
-            variant="primary"
-            rightIcon={<ArrowRight className="w-5 h-5" />}
-            onClick={() => {
-              trackCTAClick('pain-points', 'mid-page');
-              document.getElementById('book')?.scrollIntoView({ behavior: 'smooth' });
-            }}
-          >
-            {marketing.primaryCTA}
-          </Button>
+          <a href="#product" className="text-link">
+            Meet a simpler workflow <ArrowUpRight size={18} aria-hidden="true" />
+          </a>
         </div>
-      </Container>
-    </Section>
+      </div>
+    </section>
   );
 }

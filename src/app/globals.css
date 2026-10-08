@@ -1,11 +1,12 @@
 @import "tailwindcss";
+@import "./editorial.css";
 
 /* CSS Custom Properties for Brand Colors */
 :root {
-  --color-primary: #3B82F6;
-  --color-primary-hover: #2563EB;
-  --color-accent: #10B981;
-  --color-accent-hover: #059669;
+  --color-primary: #35482e;
+  --color-primary-hover: #263520;
+  --color-accent: #5e7a49;
+  --color-accent-hover: #476039;
   --color-secondary: #6B7280;
 }
 
@@ -19,7 +20,7 @@
   --color-emerald-700: var(--color-accent-hover);
   
   /* Typography */
-  --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 

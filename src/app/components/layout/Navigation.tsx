@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Menu, X, Calendar } from 'lucide-react';
+import { Menu, X, ArrowUpRight } from 'lucide-react';
 import { Button, Container, Logo } from '@/app/components/ui';
 import { marketing } from '@/app/config/marketing';
 import { cn } from '@/lib/utils';
@@ -14,8 +14,8 @@ export function Navigation() {
 
   // Navigation items
   const navItems = [
+    { label: 'The workspace', href: '#product' },
     { label: 'How it works', href: '#how-it-works' },
-    { label: 'Product', href: '#product' },
     { label: 'FAQ', href: '#faq' }
   ];
 
@@ -52,8 +52,8 @@ export function Navigation() {
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-gray-100">
-      <Container>
+    <header className="site-navigation sticky top-0 z-40">
+      <Container size="xl">
         <nav className="flex items-center justify-between py-4">
           {/* Logo */}
           <Logo href="#" size="md" />
@@ -73,7 +73,7 @@ export function Navigation() {
             <Button
               variant="primary"
               size="md"
-              rightIcon={<Calendar className="w-4 h-4" />}
+              rightIcon={<ArrowUpRight className="w-4 h-4" />}
               onClick={handleBookingClick}
             >
               {marketing.primaryCTA}
@@ -86,6 +86,7 @@ export function Navigation() {
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
             aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-navigation"
           >
             {isMobileMenuOpen ? (
               <X className="w-6 h-6" />
@@ -97,7 +98,7 @@ export function Navigation() {
 
         {/* Mobile menu */}
         <div className={cn(
-          'md:hidden overflow-hidden transition-all duration-300',
+                'md:hidden overflow-hidden transition-all duration-300',
           isMobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
         )}>
           <div className="py-4 border-t border-gray-100">
@@ -116,7 +117,7 @@ export function Navigation() {
                 <Button
                   variant="primary"
                   size="md"
-                  rightIcon={<Calendar className="w-4 h-4" />}
+                  rightIcon={<ArrowUpRight className="w-4 h-4" />}
                   onClick={handleBookingClick}
                   fullWidth
                 >

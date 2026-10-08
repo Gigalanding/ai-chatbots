@@ -13,6 +13,7 @@ import {
 import { BookingEmbed } from '@/app/components/booking';
 import { ContactForm } from '@/app/components/forms';
 import { marketing } from '@/app/config/marketing';
+import { MotionProvider } from '@/app/components/ui/Motion';
 
 // SEO metadata
 export const metadata: Metadata = {
@@ -73,7 +74,8 @@ export const metadata: Metadata = {
  */
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-white">
+    <MotionProvider>
+    <div className="min-h-screen landing-page">
       {/* Navigation */}
       <Navigation />
 
@@ -107,5 +109,6 @@ export default function LandingPage() {
       {/* Sticky CTA for mobile/desktop */}
       <StickyCTA />
     </div>
+    </MotionProvider>
   );
 }
